@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+    container_name: fastapi-tutorial
+    volumes:
+      - ./app:/app/
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://admin:admin@db/tutorial
+    command: "uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=tutorial
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
